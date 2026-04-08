@@ -1,0 +1,31 @@
+model:
+  base_model: "xlm-roberta-base"
+  max_length: 128
+  num_labels: 2
+
+training:
+  num_epochs: 5
+  batch_size: 32
+  learning_rate: 2.0e-5
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_clip: 1.0
+  seed: 42
+
+adversarial:
+  lambda_adv: 0.5
+  hidden_dim: 128
+  num_identity_groups: 4  # religion, caste, gender, region
+
+cda:
+  augment_ratio: 1.0  # 1:1 augmented to original
+
+paths:
+  data_dir: "data/raw"
+  processed_dir: "data/processed"
+  augmented_dir: "data/augmented"
+  model_dir: "models"
+  results_dir: "results"
+
+evaluation:
+  batch_size: 64

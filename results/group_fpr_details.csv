@@ -1,0 +1,13 @@
+Model,Group,FPR
+Baseline,caste,0.4211
+Baseline,gender,0.1505
+Baseline,region,0.0
+Baseline,religion,0.2825
+CDA,caste,0.3421
+CDA,gender,0.1465
+CDA,region,0.1667
+CDA,religion,0.2825
+Adversarial,caste,0.3947
+Adversarial,gender,0.1386
+Adversarial,region,0.1667
+Adversarial,religion,0.2486

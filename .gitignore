@@ -1,0 +1,94 @@
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ============================================
+# Virtual environments
+# ============================================
+.venv/
+venv/
+env/
+.env/
+ENV/
+
+# ============================================
+# Data — raw and intermediate (large, regenerable)
+# ============================================
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/augmented/*
+!data/augmented/.gitkeep
+
+# ============================================
+# Models — checkpoints (very large, regenerable)
+# ============================================
+models/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+*.onnx
+
+# ============================================
+# Logs and runs
+# ============================================
+logs/
+runs/
+wandb/
+mlruns/
+lightning_logs/
+
+# NOTE: results/ is intentionally NOT ignored.
+# The CSVs in results/ are small and form the published numbers
+# referenced by the paper and the website.
+
+# ============================================
+# OS / Editor
+# ============================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ============================================
+# Secrets / env files
+# ============================================
+.env
+.env.local
+.env.*.local
+secrets.yaml
+*.key
+*.pem
+
+# ============================================
+# Jupyter
+# ============================================
+.ipynb_checkpoints/
+*.ipynb_meta
+
+# ============================================
+# Project artifacts
+# ============================================
+# HuggingFace cache (if accidentally placed in repo)
+.cache/
+huggingface/

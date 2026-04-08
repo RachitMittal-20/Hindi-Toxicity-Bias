@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mitigating Identity Bias in Hindi Toxicity Detection</title>
+  <meta name="description" content="A study comparing Counterfactual Data Augmentation and Adversarial Debiasing for fair Hindi-English code-mixed hate speech detection." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- LOADING SCREEN -->
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-mark">HT</div>
+      <div class="loader-bar"><span></span></div>
+      <p class="loader-text">Loading research</p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a href="#top" class="brand">
+        <span class="brand-mark">HT</span>
+        <span class="brand-text">Hindi Toxicity Bias</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#authors">Authors</a></li>
+        <li><a href="#dataset">Dataset</a></li>
+        <li><a href="#methods">Methods</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#analysis">Analysis</a></li>
+        <li><a href="#reproduce">Reproduce</a></li>
+        <li><a href="paper.pdf" class="nav-pdf" target="_blank" rel="noopener">📄 PDF</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Fairness in NLP · 2026</p>
+        <h1>Mitigating Identity Bias in Hindi&#8211;English Code-Mixed Toxicity Detection</h1>
+        <p class="lede">
+          A controlled comparison of <strong>Counterfactual Data Augmentation</strong> and
+          <strong>Adversarial Debiasing</strong> on XLM-RoBERTa, evaluated across four identity
+          subgroups using FPR Disparity, Demographic Parity, and Counterfactual Fairness.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">29,550</span>
+            <span class="stat-label">Annotated samples</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">−54%</span>
+            <span class="stat-label">FPR Disparity (CDA)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">−73%</span>
+            <span class="stat-label">Demographic Parity Δ (CDA)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">1.8%</span>
+            <span class="stat-label">F1 cost</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="paper.pdf" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:-3px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Read the Paper
+          </a>
+          <a href="#results" class="btn btn-ghost">View Results</a>
+          <a href="#reproduce" class="btn btn-ghost">Reproduce</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABSTRACT -->
+    <section id="abstract" class="section">
+      <div class="container narrow">
+        <h2>Abstract</h2>
+        <p>
+          Toxicity classifiers for Hindi&#8211;English code-mixed text systematically over-flag
+          benign content that mentions identity groups such as religion, caste, gender, and
+          region. We fine-tune XLM-RoBERTa on a 29,550-sample code-mixed corpus and compare two
+          mitigation strategies: <strong>Counterfactual Data Augmentation (CDA)</strong>, which
+          augments training data by swapping identity terms, and <strong>Adversarial
+          Debiasing</strong>, which jointly trains the classifier against an identity predictor
+          via gradient reversal. CDA reduces False Positive Rate Disparity by 54% and the
+          Demographic Parity gap by 73% with only a 1.8 point F1 drop. Adversarial debiasing
+          better preserves accuracy but worsens counterfactual fairness, suggesting it
+          superficially decorrelates identity from prediction without changing the underlying
+          decision logic. We release code, processed data, and a counterfactual fairness test
+          set for reproducibility.
+        </p>
+      </div>
+    </section>
+
+    <!-- AUTHORS -->
+    <section id="authors" class="section section-alt">
+      <div class="container">
+        <h2>Authors</h2>
+        <p class="section-lede">
+          Department of Computer Science and Engineering<br>
+          SRM Institute of Science and Technology, Uttar Pradesh, India &mdash; 201204
+        </p>
+
+        <div class="authors-grid">
+          <article class="author-card">
+            <div class="author-avatar">SG</div>
+            <h3>Saurabh Gupta</h3>
+            <p class="author-role">Faculty</p>
+            <a class="author-mail" href="mailto:saurabhg1@srmist.edu.in">saurabhg1@srmist.edu.in</a>
+          </article>
+
+          <article class="author-card">
+            <div class="author-avatar">DS</div>
+            <h3>Devansh Singh</h3>
+            <p class="author-role">Researcher</p>
+            <a class="author-mail" href="mailto:ds2553@srmist.edu.in">ds2553@srmist.edu.in</a>
+          </article>
+
+          <article class="author-card">
+            <div class="author-avatar">AC</div>
+            <h3>Aviral Chandra</h3>
+            <p class="author-role">Researcher</p>
+            <a class="author-mail" href="mailto:ac5379@srmist.edu.in">ac5379@srmist.edu.in</a>
+          </article>
+
+          <article class="author-card">
+            <div class="author-avatar">RM</div>
+            <h3>Rachit Mittal</h3>
+            <p class="author-role">Researcher</p>
+            <a class="author-mail" href="mailto:rm8782@srmist.edu.in">rm8782@srmist.edu.in</a>
+          </article>
+
+          <article class="author-card">
+            <div class="author-avatar">CN</div>
+            <h3>Chanakya Nath</h3>
+            <p class="author-role">Researcher</p>
+            <a class="author-mail" href="mailto:cn2211@srmist.edu.in">cn2211@srmist.edu.in</a>
+          </article>
+        </div>
+
+        <div class="paper-cta">
+          <div>
+            <h3>Full Research Paper</h3>
+            <p>Read the complete write-up — methodology, results, discussion, and references.</p>
+          </div>
+          <a href="paper.pdf" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:-3px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Open PDF
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATASET -->
+    <section id="dataset" class="section">
+      <div class="container">
+        <h2>Dataset</h2>
+        <p class="section-lede">
+          We use the publicly available Kaggle Code-Mixed Hinglish Hate Speech corpus, a
+          combined release aggregating multiple Hindi&#8211;English social media sources.
+          Identity terms are auto-annotated using a curated lexicon spanning four protected
+          subgroups.
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Corpus Composition</h3>
+            <table class="data-table">
+              <thead>
+                <tr><th>Split</th><th>Samples</th><th>Hate</th><th>Non-Hate</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Train</td><td>20,684</td><td>9,607</td><td>11,077</td></tr>
+                <tr><td>Dev</td><td>2,955</td><td>1,373</td><td>1,582</td></tr>
+                <tr><td>Test</td><td>5,911</td><td>2,745</td><td>3,166</td></tr>
+                <tr class="total"><td>Total</td><td>29,550</td><td>13,725</td><td>15,825</td></tr>
+              </tbody>
+            </table>
+            <p class="caption">70 / 10 / 20 stratified split, seed 42.</p>
+          </div>
+
+          <div class="card">
+            <h3>Identity Coverage</h3>
+            <table class="data-table">
+              <thead>
+                <tr><th>Group</th><th>Samples</th><th>% of corpus</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Gender</td><td>4,722</td><td>16.0%</td></tr>
+                <tr><td>Religion</td><td>1,777</td><td>6.0%</td></tr>
+                <tr><td>Caste</td><td>411</td><td>1.4%</td></tr>
+                <tr><td>Region</td><td>63</td><td>0.2%</td></tr>
+                <tr class="total"><td>Any identity</td><td>6,973</td><td>23.6%</td></tr>
+              </tbody>
+            </table>
+            <p class="caption">Region subgroup is small &mdash; treated cautiously in analysis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHODS -->
+    <section id="methods" class="section section-alt">
+      <div class="container">
+        <h2>Methods</h2>
+        <p class="section-lede">
+          Three models are trained on the same data with identical hyperparameters; only the
+          objective changes.
+        </p>
+
+        <div class="grid grid-3">
+          <div class="card method-card">
+            <span class="badge badge-baseline">Baseline</span>
+            <h3>XLM-R Fine-tune</h3>
+            <p>
+              Standard fine-tuning of XLM-RoBERTa<sub>base</sub> with cross-entropy on the toxicity
+              label. No fairness intervention.
+            </p>
+            <ul class="hyper-list">
+              <li>Loss: <code>L<sub>tox</sub></code></li>
+              <li>No identity signal used</li>
+            </ul>
+          </div>
+
+          <div class="card method-card">
+            <span class="badge badge-cda">CDA</span>
+            <h3>Counterfactual Augmentation</h3>
+            <p>
+              For each training instance containing an identity term, generate a counterfactual
+              by swapping the term with another from the same group. Train on the union of
+              original and augmented data (1:1 ratio).
+            </p>
+            <ul class="hyper-list">
+              <li>Loss: <code>L<sub>tox</sub></code> on augmented set</li>
+              <li>Augmentation ratio: 1.0</li>
+            </ul>
+          </div>
+
+          <div class="card method-card">
+            <span class="badge badge-adv">Adversarial</span>
+            <h3>Gradient Reversal</h3>
+            <p>
+              Two-head model: a toxicity classifier and an identity predictor share the encoder.
+              Gradient reversal pushes the encoder to be uninformative about identity.
+            </p>
+            <ul class="hyper-list">
+              <li>Loss: <code>L<sub>total</sub> = L<sub>tox</sub> &minus; λ·L<sub>adv</sub></code></li>
+              <li>λ = 0.5, hidden dim 128</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="subhead">Training Configuration</h3>
+        <div class="card config-card">
+          <table class="data-table">
+            <tbody>
+              <tr><td>Backbone</td><td><code>xlm-roberta-base</code></td></tr>
+              <tr><td>Max sequence length</td><td>128 tokens</td></tr>
+              <tr><td>Batch size</td><td>32</td></tr>
+              <tr><td>Epochs</td><td>5</td></tr>
+              <tr><td>Optimizer</td><td>AdamW (β₁=0.9, β₂=0.98)</td></tr>
+              <tr><td>Learning rate</td><td>2 × 10⁻⁵</td></tr>
+              <tr><td>Warmup ratio</td><td>0.1</td></tr>
+              <tr><td>Weight decay</td><td>0.01</td></tr>
+              <tr><td>Gradient clip</td><td>1.0</td></tr>
+              <tr><td>Seed</td><td>42</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results" class="section">
+      <div class="container">
+        <h2>Results</h2>
+        <p class="section-lede">
+          All metrics computed on the 5,911-sample held-out test set. Bias metrics computed
+          across the four identity subgroups; lower is better.
+        </p>
+
+        <div class="card results-card">
+          <h3>Headline Comparison</h3>
+          <div class="table-wrap">
+            <table class="data-table results-table">
+              <thead>
+                <tr>
+                  <th rowspan="2">Model</th>
+                  <th colspan="5" class="group-header">Utility</th>
+                  <th colspan="3" class="group-header">Fairness (lower is better)</th>
+                </tr>
+                <tr>
+                  <th>Acc</th><th>Prec</th><th>Rec</th><th>F1</th><th>Macro F1</th>
+                  <th>FPR Δ</th><th>DP Δ</th><th>CFT Gap</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-baseline">Baseline</span></td>
+                  <td>0.749</td><td>0.778</td><td>0.642</td><td><strong>0.703</strong></td><td>0.743</td>
+                  <td>0.421</td><td>0.505</td><td>0.052</td>
+                </tr>
+                <tr class="row-best">
+                  <td><span class="badge badge-cda">CDA</span></td>
+                  <td>0.734</td><td>0.761</td><td>0.624</td><td>0.685</td><td>0.728</td>
+                  <td><strong>0.196</strong></td><td><strong>0.136</strong></td><td><strong>0.042</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-adv">Adversarial</span></td>
+                  <td>0.747</td><td>0.781</td><td>0.633</td><td>0.699</td><td>0.741</td>
+                  <td>0.256</td><td>0.294</td><td>0.068</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="caption">
+            Bold = best per column. CDA achieves the best fairness on all three metrics; F1 cost
+            is 1.8 percentage points.
+          </p>
+        </div>
+
+        <div class="grid grid-3 deltas">
+          <div class="card delta-card good">
+            <span class="delta-label">FPR Disparity</span>
+            <span class="delta-value">−54%</span>
+            <span class="delta-sub">CDA vs Baseline</span>
+          </div>
+          <div class="card delta-card good">
+            <span class="delta-label">Demographic Parity Δ</span>
+            <span class="delta-value">−73%</span>
+            <span class="delta-sub">CDA vs Baseline</span>
+          </div>
+          <div class="card delta-card good">
+            <span class="delta-label">CFT Gap</span>
+            <span class="delta-value">−19%</span>
+            <span class="delta-sub">CDA vs Baseline</span>
+          </div>
+        </div>
+
+        <h3 class="subhead">Per-Group False Positive Rates</h3>
+        <div class="card">
+          <div class="chart" id="fprChart" aria-label="Bar chart of FPR by identity group">
+            <!-- bars rendered by JS -->
+          </div>
+          <p class="caption">
+            CDA reduces caste-group FPR from 0.42 to 0.34. Religion FPR is unchanged across
+            CDA/Baseline; Adversarial improves it slightly. Region (n=63) is volatile and
+            should be interpreted with caution.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANALYSIS -->
+    <section id="analysis" class="section section-alt">
+      <div class="container narrow">
+        <h2>Analysis &amp; Discussion</h2>
+
+        <h3>1. CDA wins on every fairness metric</h3>
+        <p>
+          By directly exposing the model to identity-swapped variants of training examples,
+          CDA breaks the spurious correlation between identity tokens and the toxicity label.
+          The 73% reduction in Demographic Parity gap shows the model&apos;s positive prediction
+          rate is now nearly equal across groups, and the CFT Gap reduction confirms that
+          identity-only edits no longer flip the prediction.
+        </p>
+
+        <h3>2. Adversarial debiasing has a hidden failure mode</h3>
+        <p>
+          Adversarial debiasing improves FPR Disparity and DP Δ but <em>worsens</em> the CFT
+          Gap (0.068 vs 0.052 baseline). Gradient reversal pushes the encoder toward
+          identity-invariant representations on average, but does not guarantee that swapping
+          a single identity token in a fixed context preserves the prediction. This is
+          consistent with prior findings that adversarial debiasing can produce shallow
+          decorrelation rather than genuine counterfactual robustness.
+        </p>
+
+        <h3>3. The fairness&ndash;utility tradeoff is small</h3>
+        <p>
+          CDA costs 1.8 points of F1 in exchange for a 54% reduction in FPR Disparity. For any
+          deployment where false positives on identity-mentioning content carry a real harm
+          (community moderation, journalism, legal text), this tradeoff is favourable.
+        </p>
+
+        <h3>4. Limitations</h3>
+        <ul>
+          <li>
+            <strong>Single dataset.</strong> Results are reported on one Hindi&ndash;English
+            code-mixed corpus. Generalisation to other code-mixed languages or domains
+            requires further study.
+          </li>
+          <li>
+            <strong>Small region subgroup.</strong> Only 63 samples mention regional identity
+            terms. Per-group metrics for region are noisy and reported but not interpreted
+            strongly.
+          </li>
+          <li>
+            <strong>Lexicon-based identity detection.</strong> Identity annotation relies on a
+            curated lexicon, which under-counts implicit references and informal spellings.
+          </li>
+          <li>
+            <strong>Binary toxicity label.</strong> We do not distinguish between hate speech,
+            profanity, and offensive humour, which limits the granularity of conclusions.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- REPRODUCE -->
+    <section id="reproduce" class="section">
+      <div class="container">
+        <h2>Reproduce</h2>
+        <p class="section-lede">Five commands recreate every number on this page.</p>
+
+        <ol class="repro-steps">
+          <li>
+            <h4>Install dependencies</h4>
+            <pre><code>python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt</code></pre>
+          </li>
+          <li>
+            <h4>Prepare data</h4>
+            <pre><code># place combined_hate_speech_dataset.csv in data/raw/
+.venv/bin/python main.py --stage data</code></pre>
+          </li>
+          <li>
+            <h4>Train baseline</h4>
+            <pre><code>.venv/bin/python main.py --stage baseline</code></pre>
+          </li>
+          <li>
+            <h4>Train CDA &amp; Adversarial</h4>
+            <pre><code>.venv/bin/python main.py --stage cda
+.venv/bin/python main.py --stage adversarial</code></pre>
+          </li>
+          <li>
+            <h4>Evaluate &amp; compare</h4>
+            <pre><code>.venv/bin/python main.py --stage evaluate
+# → results/model_comparison.csv</code></pre>
+          </li>
+        </ol>
+
+        <div class="card env-card">
+          <h3>Environment</h3>
+          <ul>
+            <li>Python 3.9+</li>
+            <li>PyTorch 2.0+ (CUDA, MPS, or CPU)</li>
+            <li>transformers ≥ 4.35</li>
+            <li>~1.5 GB disk for model weights</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="brand-text">Hindi Toxicity Bias</p>
+        <p class="muted">A study on fair toxicity classification for Hindi&ndash;English code-mixed text.</p>
+      </div>
+      <div>
+        <p class="footer-head">Sections</p>
+        <ul>
+          <li><a href="#abstract">Abstract</a></li>
+          <li><a href="#dataset">Dataset</a></li>
+          <li><a href="#methods">Methods</a></li>
+          <li><a href="#results">Results</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-head">Resources</p>
+        <ul>
+          <li><a href="paper.pdf" target="_blank" rel="noopener">Full PDF paper</a></li>
+          <li><a href="#reproduce">Reproduction guide</a></li>
+          <li><a href="#analysis">Limitations</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <p class="muted small">
+        © 2026 SRM Institute of Science and Technology · Saurabh Gupta, Devansh Singh, Aviral Chandra, Rachit Mittal, Chanakya Nath
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
