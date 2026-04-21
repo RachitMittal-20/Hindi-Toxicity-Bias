@@ -19,7 +19,7 @@ Department of Computer Science and Engineering
 SRM Institute of Science and Technology, Uttar Pradesh, India — 201204
 
 📄 **[Read the full paper (PDF)](Quantifying%20Bias%20in%20Hindi-Hinglish%20Toxicity%20Classification.pdf)**
-🌐 **[Project website](https://devanshsrajput.github.io/Hindi-Toxicity-Bias/)** · 📊 **[Project summary](PROJECT_SUMMARY.md)**
+🌐 **[Project website](https://research.devanshsingh.dev)** · 📊 **[Project summary](PROJECT_SUMMARY.md)**
 
 ---
 
