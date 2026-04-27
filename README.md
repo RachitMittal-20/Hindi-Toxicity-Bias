@@ -1,4 +1,4 @@
-# Quantifying Bias in Hindi/Hinglish Toxicity Classification
+# Quantifying and Mitigating Bias in Hindi/Hinglish Toxicity Classification 
 
 > A controlled study of identity-correlated bias in Hindi–English code-mixed
 > hate speech classifiers, comparing **Counterfactual Data Augmentation** and
